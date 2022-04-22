@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gitops-mongo-ce-mongo-ce-sa-sa
+spec:
+  destination:
+    namespace: gitops-mongo-ce
+    server: https://kubernetes.default.svc
+  project: 1-infrastructure
+  source:
+    path: payload/1-infrastructure/namespace/gitops-mongo-ce/mongo-ce-sa-sa
+    repoURL: https://github.com/cloud-native-toolkit-test/gitops-mongo-ce-ocp4
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  ignoreDifferences:
+    - jsonPointers:
+        - /imagePullSecrets
+        - /secrets
+      kind: ServiceAccount
